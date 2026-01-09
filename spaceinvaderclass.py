@@ -21,7 +21,7 @@ class Ship:
     
         """
         decal=self.taille//2
-        pyxel.blt(self.x - decal, self.y - decal, 1, 0, 0, self.taille, self.taille)
+        pyxel.rectb(self.x - decal, self.y - decal,self.taille,self.taille,7)
     def move (self,dx,dy):
         """
         deplacement du vaisseau 
@@ -60,7 +60,7 @@ class App:
         self.missiles = []
         self.score = 0
         self.game_over = False
-        self.wave = 1  # Numéro de la vague
+        self.vague_num = 1  # Numéro de la vague
         self.enemy_speed = 0.3  # Vitesse initiale
         
         pyxel.load("ressources.pyxres")
@@ -81,15 +81,8 @@ class App:
                 self.enemies.append(Enemy(x, y))
         # Augmenter la vitesse de la vague
         self.enemy_speed += 0.1
-        self.vague += 1
-
+        self.vague_num += 1
     def update(self):
-        if self.game_over:
-            if pyxel.btnp(pyxel.KEY_RETURN):
-                # Redémarrer le jeu
-                self.__init__()
-            return
-        
         if pyxel.btn(pyxel.KEY_RIGHT):
             self.ship.move(1, 0)
 
@@ -149,12 +142,11 @@ class App:
         
         # Afficher le score
         pyxel.text(5, 5, f"Score: {self.score}", 7)
-        pyxel.text(5, 15, f"Vague: {self.wave}", 7)
+        pyxel.text(5, 15, f"Vague: {self.vague_num}", 7)
         
         # Afficher game over
         if self.game_over:
             pyxel.text(40, 90, "GAME OVER", 8)
-            pyxel.text(30, 110, "Appuyer ENTREE", 7)
 
 
 class Missile:

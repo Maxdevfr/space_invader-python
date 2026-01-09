@@ -12,7 +12,7 @@ class Ship:
         """
         self.x=x
         self.y=y
-        self.taille=8
+        self.taille=16
     
     
     def draw(self):
@@ -21,7 +21,7 @@ class Ship:
     
         """
         decal=self.taille//2
-        pyxel.rectb(self.x - decal, self.y - decal,self.taille,self.taille,7)
+        pyxel.blt(self.x - decal, self.y - decal, 1, 0, 0, 16, 16)
     def move (self,dx,dy):
         """
         deplacement du vaisseau 
@@ -60,7 +60,7 @@ class App:
         self.missiles = []
         self.score = 0
         self.game_over = False
-        self.vague_num = 1  # Numéro de la vague
+        self.vague_num = 0  # Numéro de la vague
         self.enemy_speed = 0.3  # Vitesse initiale
         
         pyxel.load("ressources.pyxres")
@@ -82,18 +82,20 @@ class App:
         # Augmenter la vitesse de la vague
         self.enemy_speed += 0.1
         self.vague_num += 1
+   
     def update(self):
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            self.ship.move(1, 0)
+        if not self.game_over:
+            if pyxel.btn(pyxel.KEY_RIGHT):
+                self.ship.move(1, 0)
 
-        if pyxel.btn(pyxel.KEY_LEFT):
-            self.ship.move(-1, 0)
+            if pyxel.btn(pyxel.KEY_LEFT):
+                self.ship.move(-1, 0)
 
-       
-        if pyxel.btnp(pyxel.KEY_SPACE):
-            self.missiles.append(
-                Missile(self.ship.x, self.ship.y - 6)
-            )
+           
+            if pyxel.btnp(pyxel.KEY_SPACE):
+                self.missiles.append(
+                    Missile(self.ship.x, self.ship.y - 6)
+                )
 
      
         for missile in self.missiles[:]:
@@ -171,18 +173,15 @@ class Enemy:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.taille = 9  # Taille du carré de l'ennemi
+        self.taille = 16  # Taille du carré de l'ennemi
     
     def draw(self):
         """Affichage ennemi"""
         decal = self.taille // 2
-        pyxel.blt(self.x - decal, self.y - decal, 0, 0, 0, self.taille, self.taille)
+        pyxel.blt(self.x - decal, self.y - decal, 0, 0, 0, 16, 16)
     
     def move(self, dy):
         """Déplacement ennemi"""
         self.y += dy
 
 App()
-
-
-

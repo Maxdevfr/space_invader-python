@@ -76,7 +76,7 @@ class App:
                 x = 10 + colonne * espacement
                 y = 10 + ligne * espacement
                 self.enemies.append(Enemy(x, y))
-        # Augmenter la vitesse de la vague
+                
         self.enemy_speed += 0.1
         self.vague_num += 1
    
@@ -229,3 +229,4 @@ class EnemyMissile:
                    self.taille, self.taille, 10)
 
 App()
+

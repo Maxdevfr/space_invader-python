@@ -5,28 +5,22 @@ import random
 class Ship:
     
     """Vaisseau principal"""
-    def __init__(self,x,y):
-        """
-        Caracteristique du vaisseau.
-        c'est un carre dans un premier temps
     
-        """
+    def __init__(self,x,y):
+ 
         self.x=x
         self.y=y
         self.taille=16
     
     
     def draw(self):
-        """
-        Affichage vaisseau 
-    
-        """
+ 
         decal=self.taille//2
         pyxel.blt(self.x - decal, self.y - decal, 1, 0, 0, 16, 16)
+
+
     def move (self,dx,dy):
-        """
-        deplacement du vaisseau 
-        """
+        
         self.x+=dx
         self.y+=dy
        
@@ -41,15 +35,15 @@ def collision(missile, enemy):
     """
     Collision
     """
-    # Distance entre les centres des deux objets
+   
     dist_x = abs(missile.x - enemy.x)
     dist_y = abs(missile.y - enemy.y) 
     
-    # Somme des demi-tailles
+  
     demi_missile = missile.taille // 2
     demi_enemy = enemy.taille // 2
     
-    # Il y a collision si les deux conditions sont vraies
+    
     return dist_x < (demi_missile + demi_enemy) and dist_y < (demi_missile + demi_enemy)
 
 
@@ -59,16 +53,16 @@ class App:
         self.ship = Ship(60, 180)
         self.enemies = []
         self.missiles = []
-        self.enemy_missiles = []  # Missiles des ennemis
+        self.enemy_missiles = []  
         self.score = 0
         self.game_over = False
-        self.vague_num = 0  # Numéro de la vague
-        self.enemy_speed = 0.3  # Vitesse initiale
+        self.vague_num = 0 
+        self.enemy_speed = 0.3  
         
         
         pyxel.load("ressources.pyxres")
         
-        # Créer la première vague
+        
         self.vague()
 
         pyxel.run(self.update, self.draw)
@@ -102,9 +96,9 @@ class App:
                     Missile(self.ship.x, self.ship.y - 6)
                 )
 
-            # Ennemis tirent aléatoirement
+            
             for enemy in self.enemies:
-                if random.random() < 0.01:  # 1% de chance par frame
+                if random.random() < 0.01:  
                     self.enemy_missiles.append(
                         EnemyMissile(enemy.x, enemy.y + 8)
                     )
@@ -114,65 +108,62 @@ class App:
                 if missile.y < 0:
                     self.missiles.remove(missile)
 
-            # Déplacer et vérifier les missiles des ennemis
+           
             for enemy_missile in self.enemy_missiles[:]:
                 enemy_missile.move()
                 if enemy_missile.y > 200:
                     self.enemy_missiles.remove(enemy_missile)
                 
-                # Vérifier collision avec le vaisseau
+                
                 if collision(self.ship, enemy_missile):
-                    self.show_collision_image = True
-                    self.collision_time = 0
                     self.game_over = True
-                    pyxel.play(0, 2)  # Son 2
+                    pyxel.play(0, 2)  
+                    
                     if enemy_missile in self.enemy_missiles:
                         self.enemy_missiles.remove(enemy_missile)
 
             for enemy in self.enemies:
                 enemy.move(self.enemy_speed)
                 
-                # Vérifier collision avec le vaisseau
-                if collision(self.ship, enemy):
-                    self.show_collision_image = True
-                    self.collision_time = 0
-                    self.game_over = True
-                    pyxel.play(0, 2)  # Son 2
                 
-                # Game over si ennemi descend trop bas
+                if collision(self.ship, enemy):
+                    self.game_over = True
+                    pyxel.play(0, 2) 
+                
+                
                 if enemy.y > 200:
                     self.game_over = True
             
-            # Vérifier collisions missile-ennemi
+            
             for missile in self.missiles[:]:
                 for enemy in self.enemies[:]:
                     if collision(missile, enemy):
-                        # Enlever le missile et l'ennemi
+                        
                         if missile in self.missiles:
                             self.missiles.remove(missile)
                         if enemy in self.enemies:
                             self.enemies.remove(enemy)
-                            # son de collision
-                        pyxel.play(0, 0)  # Son 0
-                        # Ajouter au score
+                           
+                        pyxel.play(0, 0)  
+                       
                         self.score += 10
                         break
             
-            # Vérifier si tous les ennemis sont morts pour créer une nouvelle vague
+           
             if len(self.enemies) == 0:
                 self.vague()
 
     def draw(self):
         pyxel.cls(0)
         
-        # Si game over ne rien dessiner d'autre que le message
+       
         if self.game_over:
             pyxel.text(40, 90, "GAME OVER", 8)
             pyxel.text(40, 110, f"Score: {self.score}", 20)
             pyxel.text(40, 130, f"Vague: {self.vague_num}", 20)
             return
         
-        # Afficher le vaisseau
+       
         self.ship.draw()
         
         for missile in self.missiles:
@@ -182,7 +173,7 @@ class App:
         for enemy in self.enemies:
             enemy.draw()
         
-        # Afficher le score
+       
         pyxel.text(5, 5, f"Score: {self.score}", 7)
         pyxel.text(5, 15, f"Vague: {self.vague_num}", 7)
 
@@ -192,7 +183,7 @@ class Missile:
         self.x = x
         self.y = y
         self.taille = taille
-        self.vitesse = -2  # vers le haut
+        self.vitesse = -2 
 
     def move(self):
         self.y += self.vitesse
@@ -227,7 +218,7 @@ class EnemyMissile:
         self.x = x
         self.y = y
         self.taille = taille
-        self.vitesse = 1  # vers le bas
+        self.vitesse = 1 
 
     def move(self):
         self.y += self.vitesse

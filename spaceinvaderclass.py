@@ -140,7 +140,6 @@ class App:
                             self.enemies.remove(enemy)
                            
                         pyxel.play(0, 0)  
-                       
                         self.score += 10
                         break
             
@@ -223,6 +222,7 @@ class EnemyMissile:
         pyxel.rect(self.x - decal, self.y - decal, self.taille, self.taille, 10)
 
 App()
+
 
 
 

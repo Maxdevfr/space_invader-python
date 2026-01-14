@@ -58,13 +58,8 @@ class App:
         self.game_over = False
         self.vague_num = 0 
         self.enemy_speed = 0.3  
-        
-        
         pyxel.load("ressources.pyxres")
-        
-        
         self.vague()
-
         pyxel.run(self.update, self.draw)
 
     def vague(self):
@@ -228,5 +223,6 @@ class EnemyMissile:
         pyxel.rect(self.x - decal, self.y - decal, self.taille, self.taille, 10)
 
 App()
+
 
 
